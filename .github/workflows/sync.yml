@@ -2,9 +2,11 @@ name: Sync from local server
 
 on:
   schedule:
-    # Run every 15 minutes
     - cron: '*/15 * * * *'
-  workflow_dispatch:  # allows manual trigger from GitHub UI or API
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   sync:
@@ -23,5 +25,9 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add cached.html
-          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-sync at $(date -u)"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-sync at $(date -u)"
+            git push
+          fi
