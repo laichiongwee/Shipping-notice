@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Documents Viewer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* === EXACT CSS FROM index.php (no upload/delete specific styles) === */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .doc-card {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .doc-header {
+            background: #f8f9fc;
+            padding: 18px 25px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .doc-title { font-size: 1.2rem; font-weight: 700; color: #1e3c72; }
+        .doc-meta { font-size: 12px; color: #6c757d; }
+        .doc-preview {
+            padding: 0;
+            background: #fff;
+        }
+        .doc-preview iframe {
+            width: 100%;
+            height: auto;
+            border: none;
+            overflow: hidden;
+            display: block;
+        }
+        .no-docs {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 20px;
+            color: #6c757d;
+        }
+        @media (max-width: 768px) {
+            body { padding: 20px 10px; }
+            .doc-header { flex-direction: column; align-items: flex-start; }
+        }
+		.doc-preview {
+    overflow-x: auto;
+    width: 100%;
+}
+.doc-preview iframe {
+    width: 100%;
+    height: auto;
+    border: none;
+    display: block;
+}
+    </style>
+</head>
+<body>
+<div class="container">
+                        <div class="doc-card">
+                <div class="doc-header">
+                    <div>
+                        <div class="doc-title"><i class="fas fa-file-word" style="color: #2a5298;"></i> S.INFO 12.06.2026.docx</div>
+                        <div class="doc-meta">
+                            Uploaded: 2026-06-12 03:58:25 | 
+                            Size: 272.08 KB
+                        </div>
+                    </div>
+                </div>
+                <div class="doc-preview">
+                    <iframe src="html/1781229504_S.INFO12.06.2026.html" 
+                            title="S.INFO 12.06.2026.docx" 
+                            scrolling="no"></iframe>
+                </div>
+            </div>
+            </div>
+
+<script>
+    // Auto-resize iframes based on content height (same as original)
+    window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'iframeHeight') {
+            const iframes = document.querySelectorAll('iframe');
+            for (let iframe of iframes) {
+                if (iframe.contentWindow === event.source) {
+                    iframe.style.height = event.data.height + 'px';
+                    break;
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html><!-- Last sync: Fri Jun 12 06:52:36 UTC 2026 -->
