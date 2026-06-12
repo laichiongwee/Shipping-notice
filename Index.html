@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vessels Schedule – Mirror</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .info {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            text-align: center;
+        }
+        iframe {
+            width: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="info">
+        ⏱️ Content synced every 15 minutes from the official shipping information system.
+        <br>Last update: <span id="timestamp">loading...</span>
+    </div>
+    <div id="content">
+        <iframe srcdoc="" style="height: 600px;"></iframe>
+    </div>
+</div>
+<script>
+    // Fetch the cached HTML file and insert into iframe
+    fetch('cached.html')
+        .then(response => response.text())
+        .then(html => {
+            // Extract timestamp comment if present
+            const match = html.match(/<!-- Last sync: (.*) -->/);
+            if (match) {
+                document.getElementById('timestamp').innerText = match[1];
+                // Remove the comment from the html to avoid displaying it
+                html = html.replace(/<!-- Last sync: .* -->/, '');
+            } else {
+                document.getElementById('timestamp').innerText = 'unknown';
+            }
+            const iframe = document.querySelector('iframe');
+            iframe.srcdoc = html;
+            // Resize iframe based on content (optional)
+            iframe.onload = function() {
+                iframe.style.height = iframe.contentWindow.document.documentElement.scrollHeight + 'px';
+            };
+        })
+        .catch(err => {
+            document.getElementById('content').innerHTML = '<p>Error loading content. Please try again later.</p>';
+            console.error(err);
+        });
+</script>
+</body>
+</html>
