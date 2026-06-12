@@ -1,0 +1,27 @@
+name: Sync from local server
+
+on:
+  schedule:
+    # Run every 15 minutes
+    - cron: '*/15 * * * *'
+  workflow_dispatch:  # allows manual trigger from GitHub UI or API
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch content from local server
+        run: |
+          curl -s --max-time 30 "http://rajangport.ddns.net:8080/Mantis/Traffic/embed.php" > cached.html || echo '<p>Error fetching content. Please try again later.</p>' > cached.html
+          echo "<!-- Last sync: $(date -u) -->" >> cached.html
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add cached.html
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-sync at $(date -u)"
+          git push
